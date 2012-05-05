@@ -12,6 +12,15 @@ class Trip(models.Model):
 
     objects = models.GeoManager()
 
+    def pending(self):
+        return Rider.objects.filter(trip=self,status=RiderStatus.PENDING)
+
+    def rejected(self):
+        return Rider.objects.filter(trip=self,status=RiderStatus.REJECTED)
+
+    def going(self):
+        return Rider.objects.filter(trip=self,status=RiderStatus.ACCEPTED)
+
 class RiderRole:
     PASSENGER = "PASSENGER"
     DRIVER = "DRIVER"

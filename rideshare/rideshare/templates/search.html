@@ -22,7 +22,7 @@
     </tr>
   </thead>
 {% for trip in trips %}
-<tr><td><a href="/trip/apply/{{ trip.pk }}">Select this Trip</a></td><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td></tr>
+<tr><td><a href="/trip/{{ trip.pk }}/apply">Select this Trip</a></td><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td></tr>
 {% endfor %}
 
 </table>

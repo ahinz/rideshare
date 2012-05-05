@@ -1,16 +1,35 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/create.js"></script>
+{% endblock %}
+
 {% block content %}
 
 <h1> Trips I've Started </h1>
 
+{% for trip in mytrips %}
+<div style="border-style: solid; border-width: 1px">
 <table>
   <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
-{% for trip in mytrips %}
-<tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
+  <tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
+</table>
+<h3> Pending Users </h3>
+{% for rider in trip.pending %}
+<div>{{ rider.user }} <span><a href="/trip/{{ rider.trip.pk }}/approve/{{ rider.user.pk }}">Approve</a> | <a href="/trip/{{ rider.trip.pk }}/reject/{{ rider.user.pk }}">Reject</a></div>
+{% endfor %}
+<h3> Accepted Users </h3>
+{% for rider in trip.going %}
+<div>{{ rider.user }}</dov>
+{% endfor %}
+<h3> Rejected Users </h3>
+{% for rider in trip.rejected %}
+<div>{{ rider.user }}</div>
 {% endfor %}
 
-</table>
+</div>
+{% endfor %}
+
 
 <h1> Trips Owned by Others </h1>
 
@@ -22,7 +41,19 @@
 
 </table>
 
+<br>
+<br>
+<br>
 
+<h1>Create a Trip</h1>
+<form method="POST" active="/trip">
+{% csrf_token %}
+<div>From Address: <input name="from"></div>
+<div>To Address: <input name="to"></div>
+<div>Date: <input name="date" id="dpicker"></div>
+<div>Time: <input name="time" id="time"></div>
+<input type="submit" value="Create">
+</form>
 <br>
 <br>
 <br>

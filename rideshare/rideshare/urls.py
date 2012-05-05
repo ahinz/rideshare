@@ -11,7 +11,9 @@ urlpatterns = patterns(
     url(r'^login/', 'rideshare.views.login_user'),
     url(r'^main/', 'rideshare.views.main'),
     url(r'^trip/search', 'rideshare.views.search'),
-    url(r'^trip/apply/(?P<trip_id>\d+)', 'rideshare.views.apply_to_trip'),
+    url(r'^trip$', 'rideshare.views.create_trip'),
+    url(r'^trip/(?P<trip_id>\d+)/apply', 'rideshare.views.apply_to_trip'),
+    url(r'^trip/(?P<trip_id>\d+)/(?P<verb>[a-z]+)/(?P<user_id>\d+)', 'rideshare.views.update_pending'),
 
     # Examples:
     # url(r'^$', 'rideshare.views.home', name='home'),

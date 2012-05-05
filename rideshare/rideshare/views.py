@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required 
 from django.contrib.gis.geos import Point
 
+from django.contrib.auth.models import User
 from rideshare.models import Trip, Rider, RiderRole, RiderStatus
 
 import datetime
@@ -38,9 +39,47 @@ def home(request):
                               {},
                               context_instance=RequestContext(request))
 
+# Returns (lng,lat) 
+def geocode(address):
+    return (-71.0870361328129974, 42.3632812500000000)
+
+
+@login_required
+def create_trip(request):
+    from_lng,from_lat = geocode(request.POST['from'])
+    top_lng,top_lat = geocode(request.POST['to'])
+
+    time = "%s %s" % (request.POST['date'], request.POST['time'])
+
+    trip = Trip.objects.create(start=Point(from_lng, from_lat),end=Point(top_lng,top_lat),created_by=request.user,time=time)
+
+    Rider.objects.create(trip=trip, user=request.user, role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
+    
+    return redirect("/main")
+
+@login_required
+def update_pending(request, trip_id, verb, user_id):
+    trip = Trip.objects.get(pk=trip_id)
+
+    if trip.created_by.pk is request.user.pk:
+        rideruser = User.objects.get(pk=user_id)
+        rider = Rider.objects.get(trip=trip,user=rideruser)
+
+        if verb == "approve":
+            rider.status = RiderStatus.ACCEPTED
+        else:
+            rider.status = RiderStatus.REJECTED
+
+        rider.save()
+
+        return redirect('/main')
+    else:
+        raise Exception("Invalid user (%s=%s)" % (trip.created_by.pk,request.user.pk))
+    
+
 @login_required
 def main(request):
-    mytrips = Trip.objects.filter(rider__user=request.user)
+    mytrips = Trip.objects.filter(created_by=request.user)
 
     trips_going_on = Trip.objects.filter(rider__user=request.user).exclude(created_by=request.user)
 
