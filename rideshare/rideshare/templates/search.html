@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> Possible Trips </h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Select
+      </th>
+      <th>
+        Leaving from
+      </th>
+      <th>
+        Going to
+      </th>
+      <th>
+        Around
+      </th>
+    </tr>
+  </thead>
+{% for trip in trips %}
+<tr><td><a href="/trip/apply/{{ trip.pk }}">Select this Trip</a></td><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td></tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

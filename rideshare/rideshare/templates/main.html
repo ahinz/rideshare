@@ -2,6 +2,38 @@
 
 {% block content %}
 
-<h1> Main Content Goes Here </h1>
+<h1> Trips I've Started </h1>
+
+<table>
+  <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
+{% for trip in mytrips %}
+<tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
+{% endfor %}
+
+</table>
+
+<h1> Trips Owned by Others </h1>
+
+<table>
+  <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
+{% for trip in trips_going_on %}
+  <tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
+{% endfor %}
+
+</table>
+
+
+<br>
+<br>
+<br>
+
+<h1>Search for Trips</h1>
+
+<form method="GET" action="/trip/search">
+  <div>Lat: <input name="lat"></div>
+  <div>Lng: <input name="lng"></div>
+  <div>Radius: <input name="radius"></div>
+  <input type="submit" value="Search">
+</form>
 
 {% endblock %}

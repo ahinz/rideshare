@@ -10,6 +10,8 @@ urlpatterns = patterns(
     url(r'^$', 'rideshare.views.home'),
     url(r'^login/', 'rideshare.views.login_user'),
     url(r'^main/', 'rideshare.views.main'),
+    url(r'^trip/search', 'rideshare.views.search'),
+    url(r'^trip/apply/(?P<trip_id>\d+)', 'rideshare.views.apply_to_trip'),
 
     # Examples:
     # url(r'^$', 'rideshare.views.home', name='home'),
