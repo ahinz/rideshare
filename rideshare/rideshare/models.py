@@ -7,12 +7,21 @@ def create_userprofile(sender, **kwargs):
     created = kwargs['created'] # object created or just saved?
 
     if created:
-        FacebookProfile.objects.create(user=kwargs['instance'])
+        UserProfile.objects.create(user=kwargs['instance'])
 
 signals.post_save.connect(create_userprofile, sender=User)
 
 class UserProfile(FacebookProfileModel):
     user = models.OneToOneField(User)
+
+    def post_facebook_registration(self, request):
+        from django_facebook.utils import next_redirect
+        default_url = "/main"
+        response = next_redirect(request, default=default_url,
+                                 next_key='register_next')
+        response.set_cookie('fresh_registration', self.user_id)
+
+        return response
 
 class Trip(models.Model):
     start = models.PointField()
