@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 from omgeo import Geocoder
+from omgeo.places import PlaceQuery
 from rideshare.models import Trip, Rider, RiderRole, RiderStatus
 
 import datetime
@@ -34,39 +35,47 @@ def login_user(request):
                                'next': '/main'},
                               context_instance=RequestContext(request))
 
+
 def home(request):
     return render_to_response("index.html",
                               {},
                               context_instance=RequestContext(request))
 
+
 _geocoder = None # Cache geocoder
 def geocode(address):
-    """Given an address, returns lat/lon tuple or None if 
-    the address cannot be geocoded."""
+    """Given an address, returns candidates."""
+    pq = PlaceQuery(address)
+    global _geocoder
     if _geocoder is None:
         _geocoder = Geocoder()
-    candidates = _geocoder.geocode(address)
+    return _geocoder.geocode(pq)
+
+
+def get_top_result_from_address(address):
+    """
+    Given address, returns top result and raises
+    error if it can't geocode.
+    """
+    candidates = geocode(address)
     if len(candidates) < 1:
-        return None
-    top_result = candidates[0]
-    return (top_result.x, top_result.y)
+        raise Exception("Could not geocode %s." % address)
+    return candidates[0]
 
 
 @login_required
 def create_trip(request):
-    from_lng,from_lat = geocode(request.POST['from'])
-    top_lng,top_lat = geocode(request.POST['to'])
-
+    from_match = get_top_result_from_address(request.POST['from'])
+    to_match = get_top_result_from_address(request.POST['to'])
     m,d,y = request.POST['date'].split("/")
     time = "%s-%s-%s %s" % (y,m,d,request.POST['time'])
-
-    trip = Trip(start=Point(from_lng, from_lat),end=Point(top_lng,top_lat),created_by=request.user,time=time)
-    trip.save()
-
-    rider = Rider(trip=trip, user=request.user, role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
-    rider.save()
-    
+    trip = Trip.objects.create(start=Point(from_match.x, from_match.y),
+                        end=Point(to_match.x, to_match.y),
+                        created_by=request.user, time=time)
+    Rider.objects.create(trip=trip, user=request.user,
+                         role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
     return redirect("/main")
+
 
 @login_required
 def update_pending(request, trip_id, verb, user_id):
