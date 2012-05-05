@@ -1,6 +1,15 @@
+from django.db.models import signals
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django_facebook.models import FacebookProfileModel
+
+def create_userprofile(sender, **kwargs):
+    created = kwargs['created'] # object created or just saved?
+
+    if created:
+        FacebookProfile.objects.create(user=kwargs['instance'])
+
+signals.post_save.connect(create_userprofile, sender=User)
 
 class UserProfile(FacebookProfileModel):
     user = models.OneToOneField(User)
