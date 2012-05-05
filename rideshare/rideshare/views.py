@@ -49,11 +49,14 @@ def create_trip(request):
     from_lng,from_lat = geocode(request.POST['from'])
     top_lng,top_lat = geocode(request.POST['to'])
 
-    time = "%s %s" % (request.POST['date'], request.POST['time'])
+    m,d,y = request.POST['date'].split("/")
+    time = "%s-%s-%s %s" % (y,m,d,request.POST['time'])
 
-    trip = Trip.objects.create(start=Point(from_lng, from_lat),end=Point(top_lng,top_lat),created_by=request.user,time=time)
+    trip = Trip(start=Point(from_lng, from_lat),end=Point(top_lng,top_lat),created_by=request.user,time=time)
+    trip.save()
 
-    Rider.objects.create(trip=trip, user=request.user, role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
+    rider = Rider(trip=trip, user=request.user, role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
+    rider.save()
     
     return redirect("/main")
 

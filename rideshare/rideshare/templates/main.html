@@ -9,7 +9,7 @@
 <h1> Trips I've Started </h1>
 
 {% for trip in mytrips %}
-<div style="border-style: solid; border-width: 1px">
+<div style="border-style: solid; border-width: 1px" id="trip_list">
 <table>
   <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
   <tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
@@ -20,7 +20,7 @@
 {% endfor %}
 <h3> Accepted Users </h3>
 {% for rider in trip.going %}
-<div>{{ rider.user }}</dov>
+<div>{{ rider.user }}</div>
 {% endfor %}
 <h3> Rejected Users </h3>
 {% for rider in trip.rejected %}
@@ -46,7 +46,7 @@
 <br>
 
 <h1>Create a Trip</h1>
-<form method="POST" active="/trip">
+<form method="POST" action="/trip">
 {% csrf_token %}
 <div>From Address: <input name="from"></div>
 <div>To Address: <input name="to"></div>
