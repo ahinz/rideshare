@@ -8,6 +8,7 @@ urlpatterns = patterns(
     '',
     
     url(r'^$', 'rideshare.views.home'),
+    url(r'^login/', 'rideshare.views.login_user'),
 
     # Examples:
     # url(r'^$', 'rideshare.views.home', name='home'),
