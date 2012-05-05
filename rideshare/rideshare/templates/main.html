@@ -2,69 +2,58 @@
 
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/create.js"></script>
+<script type="text/javascript">
+    $( function() { //jQuery onLoad function
+        var getLatLon = function(pos) {
+            var api_url = "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
+            $.get(api_url, function(data){
+                $('#trip-origin').val(data.display_name);
+            });
+        }
+        navigator.geolocation.getCurrentPosition(getLatLon);
+    });
+</script>
 {% endblock %}
 
 {% block content %}
+<h1>Create a Trip</h1>
+<form method="POST" action="/trip">
+    {% csrf_token %}
+    <div>Origin: <input id="trip-origin" name="from"></div>
+    <div>Destination: <input name="to"></div>
+    <div>Date: <input name="date" id="dpicker"></div>
+    <div>Time: <input name="time" id="time"></div>
+    <input type="submit" value="Create">
+</form>
 
 <h1> Trips I've Started </h1>
-
 {% for trip in mytrips %}
-<div style="border-style: solid; border-width: 1px" id="trip_list">
-<table>
-  <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
-  <tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
-</table>
-<h3> Pending Users </h3>
-{% for rider in trip.pending %}
-<div>{{ rider.user }} <span><a href="/trip/{{ rider.trip.pk }}/approve/{{ rider.user.pk }}">Approve</a> | <a href="/trip/{{ rider.trip.pk }}/reject/{{ rider.user.pk }}">Reject</a></div>
+    <div style="border-style: solid; border-width: 1px" id="trip_list">
+    <table>
+      <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
+      <tr><td>{{ trip.start_readable }}</td><td>{{ trip.end_readable }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
+    </table>
+    <h3> Pending Users </h3>
+    {% for rider in trip.pending %}
+    <div>{{ rider.user }} <span><a href="/trip/{{ rider.trip.pk }}/approve/{{ rider.user.pk }}">Approve</a> | <a href="/trip/{{ rider.trip.pk }}/reject/{{ rider.user.pk }}">Reject</a></div>
+    {% endfor %}
+    <h3> Accepted Users </h3>
+    {% for rider in trip.going %}
+    <div>{{ rider.user }}</div>
+    {% endfor %}
+    <h3> Rejected Users </h3>
+    {% for rider in trip.rejected %}
+    <div>{{ rider.user }}</div>
+    {% endfor %}
+    </div>
 {% endfor %}
-<h3> Accepted Users </h3>
-{% for rider in trip.going %}
-<div>{{ rider.user }}</div>
-{% endfor %}
-<h3> Rejected Users </h3>
-{% for rider in trip.rejected %}
-<div>{{ rider.user }}</div>
-{% endfor %}
-
-</div>
-{% endfor %}
-
 
 <h1> Trips Owned by Others </h1>
-
 <table>
   <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
 {% for trip in trips_going_on %}
   <tr><td>{{ trip.start }}</td><td>{{ trip.end }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
 {% endfor %}
-
 </table>
-
-<br>
-<br>
-<br>
-
-<h1>Create a Trip</h1>
-<form method="POST" action="/trip">
-{% csrf_token %}
-<div>From Address: <input name="from"></div>
-<div>To Address: <input name="to"></div>
-<div>Date: <input name="date" id="dpicker"></div>
-<div>Time: <input name="time" id="time"></div>
-<input type="submit" value="Create">
-</form>
-<br>
-<br>
-<br>
-
-<h1>Search for Trips</h1>
-
-<form method="GET" action="/trip/search">
-  <div>Lat: <input name="lat"></div>
-  <div>Lng: <input name="lng"></div>
-  <div>Radius: <input name="radius"></div>
-  <input type="submit" value="Search">
-</form>
 
 {% endblock %}

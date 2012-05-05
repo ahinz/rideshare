@@ -65,13 +65,15 @@ def get_top_result_from_address(address):
 
 @login_required
 def create_trip(request):
-    from_match = get_top_result_from_address(request.POST['from'])
-    to_match = get_top_result_from_address(request.POST['to'])
+    start_match = get_top_result_from_address(request.POST['from'])
+    end_match = get_top_result_from_address(request.POST['to'])
     m,d,y = request.POST['date'].split("/")
     time = "%s-%s-%s %s" % (y,m,d,request.POST['time'])
-    trip = Trip.objects.create(start=Point(from_match.x, from_match.y),
-                        end=Point(to_match.x, to_match.y),
-                        created_by=request.user, time=time)
+    trip = Trip.objects.create(start=Point(start_match.x, start_match.y),
+                               start_readable=start_match.match_addr,
+                               end=Point(end_match.x, end_match.y),
+                               end_readable=end_match.match_addr,
+                               created_by=request.user, time=time)
     Rider.objects.create(trip=trip, user=request.user,
                          role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
     return redirect("/main")
@@ -101,7 +103,8 @@ def update_pending(request, trip_id, verb, user_id):
 def main(request):
     mytrips = Trip.objects.filter(created_by=request.user)
 
-    trips_going_on = Trip.objects.filter(rider__user=request.user).exclude(created_by=request.user)
+    trips_going_on = Trip.objects.filter(rider__user=request.user)\
+                                 .exclude(created_by=request.user)
 
     return render_to_response("main.html",
                               { "mytrips" : mytrips,
@@ -111,7 +114,8 @@ def main(request):
 @login_required
 def apply_to_trip(request, trip_id):
     trip = Trip.objects.get(pk=trip_id)
-    Rider.objects.create(trip=trip, user=request.user, role=RiderRole.PASSENGER, status=RiderStatus.PENDING)
+    Rider.objects.create(trip=trip, user=request.user,
+                         role=RiderRole.PASSENGER, status=RiderStatus.PENDING)
 
     return redirect('/main')
 
