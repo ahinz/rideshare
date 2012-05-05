@@ -15,6 +15,8 @@ urlpatterns = patterns(
     url(r'^trip/(?P<trip_id>\d+)/apply', 'rideshare.views.apply_to_trip'),
     url(r'^trip/(?P<trip_id>\d+)/(?P<verb>[a-z]+)/(?P<user_id>\d+)', 'rideshare.views.update_pending'),
 
+
+    (r'^facebook/', include('django_facebook.urls')),
     # Examples:
     # url(r'^$', 'rideshare.views.home', name='home'),
     # url(r'^rideshare/', include('rideshare.foo.urls')),

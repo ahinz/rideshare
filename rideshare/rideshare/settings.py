@@ -96,6 +96,28 @@ ROOT_URLCONF = 'rideshare.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'rideshare.wsgi.application'
 
+AUTHENTICATION_BACKENDS = (
+    'django_facebook.auth_backends.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_PROFILE_MODULE = 'rideshare.UserProfile'
+
+REGISTRATION_BACKEND = 'registration.backends.default.DefaultBackend'
+
+DEFAULT_FROM_EMAIL = 'admin@example.com'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
+    'django_facebook.context_processors.facebook',
+)
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -112,6 +134,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'south',
+    'django_facebook',
+    'registration',
     'rideshare',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -147,4 +171,3 @@ LOGGING = {
         },
     }
 }
-
