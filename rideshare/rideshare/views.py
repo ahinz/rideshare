@@ -3,8 +3,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required 
 from django.contrib.gis.geos import Point
-
 from django.contrib.auth.models import User
+from omgeo import Geocoder
 from rideshare.models import Trip, Rider, RiderRole, RiderStatus
 
 import datetime
@@ -39,9 +39,17 @@ def home(request):
                               {},
                               context_instance=RequestContext(request))
 
-# Returns (lng,lat) 
+_geocoder = None # Cache geocoder
 def geocode(address):
-    return (-71.0870361328129974, 42.3632812500000000)
+    """Given an address, returns lat/lon tuple or None if 
+    the address cannot be geocoded."""
+    if _geocoder is None:
+        _geocoder = Geocoder()
+    candidates = _geocoder.geocode(address)
+    if len(candidates) < 1:
+        return None
+    top_result = candidates[0]
+    return (top_result.x, top_result.y)
 
 
 @login_required
