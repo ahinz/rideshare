@@ -17,6 +17,8 @@ urlpatterns = patterns(
 
 
     (r'^facebook/', include('django_facebook.urls')),
+    (r'^accounts/', include('registration.urls')),
+
     # Examples:
     # url(r'^$', 'rideshare.views.home', name='home'),
     # url(r'^rideshare/', include('rideshare.foo.urls')),
