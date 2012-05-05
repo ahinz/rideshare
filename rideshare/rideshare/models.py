@@ -7,9 +7,9 @@ class UserProfile(FacebookProfileModel):
 
 class Trip(models.Model):
     start = models.PointField()
-    start_readable = models.TextField()
+    start_readable = models.TextField(default='', blank=True)
     end = models.PointField()
-    end_readable = models.TextField()
+    end_readable = models.TextField(default='', blank=True)
 
     time = models.DateTimeField()
 
