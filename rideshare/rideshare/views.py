@@ -5,16 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.contrib.auth.models import User
-
+from django.contrib.auth import authenticate, login
 from datetime import datetime
-
 from omgeo import Geocoder
 from omgeo.places import PlaceQuery
 from rideshare.models import Trip, Rider, RiderRole, RiderStatus
-
 import datetime
-
-from django.contrib.auth import authenticate, login
+import json
 
 def login_user(request):
     state = "Please log in below..."
@@ -135,14 +132,20 @@ def mobile_perform_search(request):
 
 @login_required
 def mobile_profile(request):
-    approve = request.REQUEST.get("rid",None)
-    uid = request.REQUEST.get("rid",None)
-    tid = request.REQUEST.get("tid",None)
-
+    rider_id = request.REQUEST.get("rid",None)
+    try:
+        rider = Rider.objects.get(pk=rider_id)
+    except:
+        rider = None
+    template_data = dict(rider=rider)
+    try:
+        raw = rider.user.userprofile.raw_data
+        raw = json.loads(raw)
+        template_data = dict(template_data, dict(raw=raw))
+    except:
+        pass
     return render_to_response("profile.mobile.html",
-                              {"approve": approve,
-                               "uid": uid,
-                               "tid": tid },
+                              template_data,
                               context_instance=RequestContext(request))                              
     
     
