@@ -115,3 +115,58 @@
 .images {
     text-align: center;
 }
+
+#dollars {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#dollars tr {
+}
+
+#dollarscontainer {
+    width: 100%;
+    background-image: -webkit-linear-gradient(bottom, rgb(215,255,163) 10%, rgb(255,255,255) 78%);
+    box-shadow: 4px 4px 5px #888;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #d9d9d9;
+    margin-bottom: 10px;
+}
+
+#dollars tr td {
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8em;
+}
+
+.toggle {
+    display: none;
+}
+
+.tglheader {
+    font-size:1.2em;
+    font-weight: bold;
+    padding: 5px;
+/*    text-align: center; */
+    width: 100%;
+}
+
+.tglrow {
+    padding: 5px;
+    font-size: 1em;
+/*    text-align: center; */
+}
+
+.tglbtn {
+    float: right;
+    margin-right: 30px;
+}
+
+.ap {
+    width: 100%;
+    margin: 5px;
+}

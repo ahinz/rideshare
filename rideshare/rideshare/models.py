@@ -52,6 +52,9 @@ class Trip(models.Model):
     def going(self):
         return Rider.objects.filter(trip=self,status=RiderStatus.ACCEPTED)
 
+    def num_going(self):
+        return len(self.going())
+
     def formatted_date(self):
         return self.time.strftime("%a %m/%d/%y")
 

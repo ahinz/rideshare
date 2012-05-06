@@ -15,13 +15,22 @@ Ride w/ Me | Create a Ride
 
 {% block content %}
 
-<h2>Similar trips were found!</h2>
+<h2>Someone's Going Your Way</h2>
 
 {% for trip in trips %}
 {% include "triprow.mobile.html" with trip=trip %}
 {% endfor %}
 
 <br>
+<h2>Come Ride w/ Me Rewards</h2>
+<div id="dollarscontainer">
+<table id="dollars">
+  <tr><td>You</td><td>25 mpg<sub>e</sub></td><td>$0</td></tr>
+  <tr><td>+1</td><td>50 mpg<sub>e</sub></td><td>$10</td></tr>
+  <tr><td>+2</td><td>75 mpg<sub>e</sub></td><td>$25</td></tr>
+</table>
+</div>
+
 <div class="rideform">
   <form method="POST" action="/mobile/do_create">
     {% csrf_token %}
@@ -31,5 +40,6 @@ Ride w/ Me | Create a Ride
     <input class="btn btn-danger" type="submit" value="Create My Own Trip">
   </form>
 </div>
+
 
 {% endblock %}

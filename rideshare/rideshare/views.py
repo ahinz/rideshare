@@ -98,7 +98,7 @@ def update_pending(request, trip_id, verb, user_id):
 
         rider.save()
 
-        return redirect('/main')
+        return redirect('/mobile/my_trips')
     else:
         raise Exception("Invalid user (%s=%s)" % (trip.created_by.pk,request.user.pk))
 
@@ -135,8 +135,14 @@ def mobile_perform_search(request):
 
 @login_required
 def mobile_profile(request):
+    approve = request.REQUEST.get("rid",None)
+    uid = request.REQUEST.get("rid",None)
+    tid = request.REQUEST.get("tid",None)
+
     return render_to_response("profile.mobile.html",
-                              {},
+                              {"approve": approve,
+                               "uid": uid,
+                               "tid": tid },
                               context_instance=RequestContext(request))                              
     
     

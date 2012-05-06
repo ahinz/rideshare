@@ -13,9 +13,19 @@
   </div>
   <div class="extraholder">
     <div class="num clear">
-      5
+      {{ trip.num_going }}
     </div>
   </div>
   <div class="clear"></div>
-</div>
+  <div class="toggle">
+      <div class="tglheader">Going</div>
+    {% for rider in trip.going %}
+      <div class="tglrow"> {{ rider.user.username }} <div style="float:right"><a href="/trip/{{ trip.pk }}/remove/{{ rider.user.pk }}">Remove from Trip</a></div></div>
+    {% endfor %}
+      <div class="tglheader">Pending</div>
+    {% for rider in trip.pending %}
+      <div class="tglrow"><a href="/mobile/profile?rid={{ rider.user.pk }}&tid={{ trip.pk }}">{{ rider.user.username }}</a> <div style="float: right"><a href="/mobile/approve/{{ rider.pk }}">Approve</a> | <a href="/mobile/reject/{{ rider.pk }}">Reject</a></div></div>
+    {% endfor %}
+    </table>
+  </div>
 </div>

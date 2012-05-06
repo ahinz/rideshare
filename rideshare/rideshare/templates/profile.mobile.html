@@ -39,5 +39,9 @@ Ride w/ Me | Create a Ride
   </div>
 </div>
 
+{% if approve %}
+<div><a href="/trip/{{ tid }}/approve/{{ uid }}"><button class="btn btn-success ap">Come Ride w/ Me</button></a></div>
+<div><a href="/trip/{{ tid }}/reject/{{ uid }}"><button class="btn btn-danger ap">No Thanks</button></a></div>
+{% endif %}
 
 {% endblock %}
