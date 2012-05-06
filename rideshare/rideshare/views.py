@@ -131,6 +131,13 @@ def mobile_perform_search(request):
     return render_to_response("search.mobile.html",
                               { "trips" : trips },
                               context_instance=RequestContext(request))                              
+
+
+@login_required
+def mobile_profile(request):
+    return render_to_response("profile.mobile.html",
+                              {},
+                              context_instance=RequestContext(request))                              
     
     
 @login_required
