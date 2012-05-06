@@ -4,12 +4,13 @@
 {% block content %}
 <form method="post" action=".">
   {{ form.as_p }}
-
+  {% csrf_token %}
   <input type="submit" value="{% trans 'Submit' %}" />
 </form>
 
 <form action="{% url facebook_connect %}?facebook_login=1" method="post">
   <a href="javascript:void(0);" style="font-size: 20px;" onclick="F.connect(this.parentNode);">Register, login or connect with facebook</a>
+  {% csrf_token %}
   <input type="hidden" value="/main" name="next">
 </form>
 

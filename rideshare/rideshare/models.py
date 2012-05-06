@@ -28,13 +28,20 @@ class Trip(models.Model):
     start_readable = models.TextField(default='', blank=True)
     end = models.PointField()
     end_readable = models.TextField(default='', blank=True)
-
     time = models.DateTimeField()
-
     created_by = models.ForeignKey(User)
     created_on = models.DateTimeField(auto_now=True)
-
     objects = models.GeoManager()
+    
+    def __unicode__(self):
+        start_readable = self.start_readable
+        end_readable = self.end_readable
+        if len(start_readable) > 35:
+            start_readable = '%s...' % start_readable[:32]
+        if len(end_readable) > 35:
+            end_readable = '%s...' % end_readable[:32]
+        return '%s to %s' % (start_readable,
+                             end_readable)
 
     def pending(self):
         return Rider.objects.filter(trip=self,status=RiderStatus.PENDING)
