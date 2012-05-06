@@ -9,15 +9,15 @@ Find a Ride
 {% endblock %}
 
 {% block title2 %}
-Ride w/ Me | Create a Ride
+Ride w/ Me | Rewards
 {% endblock %}
 
 
 {% block content %}
 
-<h3>Most Recent Trip</h3>
+<!-- <h3>Most Recent Trip</h3> -->
 
-<div>
+<!-- <div>
   <div class="triplabeltop">
     Last Trip
   </div>
@@ -27,48 +27,56 @@ Ride w/ Me | Create a Ride
   <div class="miles">
     {{ recent_trip.distancef }} mi from Boston MA to Philadelphia PA
   </div>
-</div>
+</div> -->
 
 <div class="badges">
   <div class="badgerow">
     <div class="badgeitem fl">
       <div class="bval">
-        400
-      </div>
-      <div class="badgelabel">
-        CO2
+        Last Trip Points:<br> 425 pts
       </div>
     </div>
     <div class="badgeitem fr">
       <div class="bval">
-        400
-      </div>
-      <div class="badgelabel">
-        CO2
-      </div>
-    </div>
-  </div>
-  <div class="badgerow">
-    <div class="badgeitem fl">
-      <div class="bval">
-        400
-      </div>
-      <div class="badgelabel">
-        CO2
-      </div>
-    </div>
-    <div class="badgeitem fr">
-      <div class="bval">
-        400
-      </div>
-      <div class="badgelabel">
-        CO2
+        Total Pts: <br>39.2k
       </div>
     </div>
   </div>
 </div>
 <div class="clear"></div>
 
-<button class="btn btn-info rwb">Rewards</button>
+<br>
+
+<div class="infoholder2">
+  <img src="{{ STATIC_URL }}img/ls.png">
+  <div style="float: right" class="infoholder">
+    <div class="info">New</div>
+    <div class="info">$16</div>
+  </div>
+  <div style="float: right" class="infoholder">
+    <div class="info">Total</div>
+    <div class="info">$53</div>
+  </div>
+  <div class="clear"></div>
+</div>
+<br>
+<button class="btn btn-info btn-large" style="width: 100%">Redeem with Living Social</button>
+<br>
+<br>
+<div class="infoholder2">
+    <img src="{{ STATIC_URL }}img/rb.png">
+  <div style="float: right" class="infoholder3">
+    <div class="info">New</div>
+    <div class="info">$16</div>
+  </div>
+  <div style="float: right" class="infoholder3">
+    <div class="info">Total</div>
+    <div class="info">$93</div>
+  </div>
+  <div class="clear"></div>
+</div>
+<br>
+<button class="btn btn-info btn-large" style="width: 100%">Redeem with Recycle Bank</buitton>
+
 
 {% endblock %}
