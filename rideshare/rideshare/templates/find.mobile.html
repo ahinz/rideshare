@@ -2,6 +2,25 @@
 
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/find.js"></script>
+<script type="text/javascript">
+    var lat;
+    var lon;
+    $( function() { //jQuery onLoad function
+        var getLatLon = function(pos) {
+            lat = pos.coords.latitude;
+            lon = pos.coords.longitude;
+            var api_url = "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&lat=" + lat + "&lon=" + lon;
+            $.get(api_url, function(data){
+                $('#trip-origin').val(data.display_name);
+                $('#trip-origin').select();
+            });
+        }
+        navigator.geolocation.getCurrentPosition(getLatLon);
+        $('#rideform').submit(function() {
+            $('#trip-origin').val(lon + ", " + lat);
+        });
+    });
+</script>
 {% endblock %}
 
 {% block title %}
@@ -14,15 +33,15 @@ Ride w/ Me | Find a Ride
 
 {% block content %}
 
-<form method="get" action="/mobile/find_trips/search">
+<form method="get" action="/mobile/find_trips/search" id="rideform">
 <div class="rideform">
   <div>Leaving from:</div>
-  <div><input placeholder="1234 Market St Philadelphia PA" name="start"></div>
+  <div><input id="trip-origin" placeholder="1234 Market St, Philadelphia, PA" name="start"></div>
   <div>Going to:</div>
-  <div><input placeholder="100 N Main St New Haven CT" name="end"></div>
+  <div><input placeholder="100 N Main St, New Haven, CT" name="end"></div>
   <div>Leaving on:</div>
-  <div class="daterow"><input id="dpicker" name="date"> at <input id="time" name="time"></div>
-  <input type="submit">
+  <div class="daterow"><input id="dpicker" name="date"> at <input id="time" name="time"> <input type="submit" value="Search" class="btn-success" style="float:right;"></div>
+  
 </div>
 </form>
 
