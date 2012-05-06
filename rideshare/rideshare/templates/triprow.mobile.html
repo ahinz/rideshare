@@ -18,6 +18,10 @@
   </div>
   <div class="clear"></div>
   <div class="toggle">
+    {% if join %}
+    <div class="tglheader"><a href="trip/{{ trip.pk }}/apply">Request to Join</a></div>
+    {% endif %}
+
       <div class="tglheader">Going</div>
     {% for rider in trip.going %}
       <div class="tglrow"> {{ rider.user.username }} <div style="float:right"><a href="/trip/{{ trip.pk }}/remove/{{ rider.user.pk }}">Remove from Trip</a></div></div>

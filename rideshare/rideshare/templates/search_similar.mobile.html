@@ -18,7 +18,7 @@ Ride w/ Me | Create a Ride
 <h2>Someone's Going Your Way</h2>
 
 {% for trip in trips %}
-{% include "triprow.mobile.html" with trip=trip %}
+{% include "triprow.mobile.html" with trip=trip join=1 %}
 {% endfor %}
 
 <br>

@@ -256,7 +256,7 @@ def apply_to_trip(request, trip_id):
     Rider.objects.create(trip=trip, user=request.user,
                          role=RiderRole.PASSENGER, status=RiderStatus.PENDING)
 
-    return redirect('/main')
+    return redirect('/mobile/my_trips')
 
 @login_required
 def search(request):

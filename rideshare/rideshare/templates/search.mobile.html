@@ -16,7 +16,7 @@ Ride w/ Me | Find a Ride
 {% block content %}
 
 {% for trip in trips %}
-{% include "triprow.mobile.html" with trip=trip %}
+{% include "triprow.mobile.html" with trip=trip join=4%}
 {% endfor %}
 
 {% endblock %}
