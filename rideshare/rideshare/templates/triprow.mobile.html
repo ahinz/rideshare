@@ -24,7 +24,7 @@
     {% endfor %}
       <div class="tglheader">Pending</div>
     {% for rider in trip.pending %}
-      <div class="tglrow"><a href="/mobile/profile?rid={{ rider.user.pk }}&tid={{ trip.pk }}">{{ rider.user.username }}</a> <div style="float: right"><a href="/mobile/approve/{{ rider.pk }}">Approve</a> | <a href="/mobile/reject/{{ rider.pk }}">Reject</a></div></div>
+      <div class="tglrow"><a href="/mobile/profile?rid={{ rider.user.pk }}&tid={{ trip.pk }}">{{ rider.user.username }}</a> <div style="float: right"><a href="/mobile/approve/{{ rider.pk }}">Ride With Me</a> | <a href="/mobile/reject/{{ rider.pk }}">No Thanks</a></div></div>
     {% endfor %}
     </table>
   </div>
