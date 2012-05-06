@@ -3,21 +3,28 @@
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/create.js"></script>
 <script type="text/javascript">
+    var lat;
+    var lon;
     $( function() { //jQuery onLoad function
         var getLatLon = function(pos) {
-            var api_url = "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
+            lat = pos.coords.latitude;
+            lon = pos.coords.longitude;
+            var api_url = "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&lat=" + lat + "&lon=" + lon;
             $.get(api_url, function(data){
                 $('#trip-origin').val(data.display_name);
             });
         }
         navigator.geolocation.getCurrentPosition(getLatLon);
+        $('#create-trip-form').submit(function() {
+            $('#trip-origin').val(lon + ", " + lat);
+        });
     });
 </script>
 {% endblock %}
 
 {% block content %}
 <h1>Create a Trip</h1>
-<form method="POST" action="/trip">
+<form method="POST" action="/trip" id="create-trip-form">
     {% csrf_token %}
     <div>Origin: <input id="trip-origin" name="from"></div>
     <div>Destination: <input name="to"></div>
@@ -33,17 +40,15 @@
       <thead><tr><th>Leaving from</th><th>Going to</th><th>Around</th><th>More Info</th></tr></thead>
       <tr><td>{{ trip.start_readable }}</td><td>{{ trip.end_readable }}</td><td>{{ trip.time }}</td><td><a href="/trip/{{ trip.pk }}">Info</a></td></tr>
     </table>
-    <h3> Pending Users </h3>
+    <h4>Riders</h4>
     {% for rider in trip.pending %}
-    <div>{{ rider.user }} <span><a href="/trip/{{ rider.trip.pk }}/approve/{{ rider.user.pk }}">Approve</a> | <a href="/trip/{{ rider.trip.pk }}/reject/{{ rider.user.pk }}">Reject</a></div>
+    <span>{{ rider.user.first_name }} {{ rider.user.last_name }} (<a href="/trip/{{ rider.trip.pk }}/approve/{{ rider.user.pk }}">Approve</a>&nbsp;|&nbsp;<a href="/trip/{{ rider.trip.pk }}/reject/{{ rider.user.pk }}">Reject)</a></span>
     {% endfor %}
-    <h3> Accepted Users </h3>
     {% for rider in trip.going %}
-    <div>{{ rider.user }}</div>
+    <span>{{ rider.user.first_name }} {{ rider.user.last_name }}</span>
     {% endfor %}
-    <h3> Rejected Users </h3>
     {% for rider in trip.rejected %}
-    <div>{{ rider.user }}</div>
+    <span style="text-decoration:line-through">{{ rider.user.first_name }} {{ rider.user.last_name }}</span>
     {% endfor %}
     </div>
 {% endfor %}
