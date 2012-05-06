@@ -15,8 +15,15 @@ Ride w/ Me | My Trips
 
 {% block content %}
 
-{% for trip in trips %}
+<h2>Upcoming</h2>
+{% for trip in upcoming_trips %}
 {% include "triprow.mobile.html" with trip=trip %}
 {% endfor %}
+
+<h2>Past Trips</h2>
+{% for trip in prev_trips %}
+{% include "triprow.mobile.html" with trip=trip %}
+{% endfor %}
+
 
 {% endblock %}

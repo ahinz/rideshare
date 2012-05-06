@@ -220,11 +220,12 @@ def mobile_home(request):
 @login_required
 def mobile_my_trips(request):
     # mytrips = Trip.objects.filter(created_by=request.user)
-
-    trips = Trip.objects.filter(rider__user=request.user).order_by("-time") #.exclude(created_by=request.user)
+    upcoming_trips = Trip.objects.filter(rider__user=request.user,time__gte=datetime.datetime.now()).order_by("time") #.exclude(created_by=request.user)
+    prev_trips = Trip.objects.filter(rider__user=request.user,time__lt=datetime.datetime.now()).order_by("-time") #.exclude(created_by=request.user)
 
     return render_to_response("mobile.html",
-                              { "trips" : trips },
+                              { "upcoming_trips" : upcoming_trips,
+                                "prev_trips" : prev_trips },
                               context_instance=RequestContext(request))                              
 
 

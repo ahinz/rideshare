@@ -10,6 +10,7 @@ urlpatterns = patterns(
     url(r'^$', 'rideshare.views.home'),
     url(r'^login/', 'rideshare.views.login_user'),
     url(r'^main/', 'rideshare.views.main'),
+    url(r'^accounts/profile/?$', 'rideshare.views.mobile_profile'),
     url(r'^mobile/profile', 'rideshare.views.mobile_profile'),
     url(r'^mobile/rewards', 'rideshare.views.rewards'),
     url(r'^mobile/do_create', 'rideshare.views.mobile_do_create'),
