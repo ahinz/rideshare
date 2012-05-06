@@ -48,20 +48,22 @@
           <a class="brand" href="#">{% block title2 %}Rideshare{% endblock %}</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              {% if request.user.username != '' %}
+                <li><a href="/accounts/logout">Log Out</a></li>
+              {% endif %}
               <li>
-                <div style="float:left; text-align: center;"><a href="/mobile/my_trips"><img src="{{ STATIC_URL }}/img/footprint.png"><br>My Trips</a></div>
-                <div style="float:right; text-align: center;"><a href="/mobile/find_trips"><img src="{{ STATIC_URL }}/img/need.png"><br>Find a Ride</a></div><div class="clear"></div>
+                <div style="float:left; text-align: center;"><a href="/mobile/my_trips"><img src="{{ STATIC_URL }}/img/nav/footprint.png"></a></div>
+                <div style="float:right; text-align: center;"><a href="/mobile/find_trips"><img src="{{ STATIC_URL }}/img/nav/need.png"></a></div><div class="clear"></div>
               </li>
               <li>
-                <div style="float:left; text-align: center;"><a href="/mobile/create_trip"><img src="{{ STATIC_URL }}/img/offer.png"><br>Offer a Ride</a></div>
-                <div style="float:right; text-align: center;"><a href="/mobile/rewards"><img src="{{ STATIC_URL }}/img/rewards.png"><br>Rewards</a></div><div class="clear"></div>
+                <div style="float:left; text-align: center;"><a href="/mobile/create_trip"><img src="{{ STATIC_URL }}/img/nav/offer.png"></a></div>
+                <div style="float:right; text-align: center;"><a href="/mobile/rewards"><img src="{{ STATIC_URL }}/img/nav/rewards.png"></a></div><div class="clear"></div>
               </li>
               <li>
-                <div style="float:left; text-align: center;"><a href="/mobile/profile"><img src="{{ STATIC_URL }}/img/footprint.png"><br>Profile</a></div>
-                <div style="float:right; text-align: center;"><a href="#"><img src="{{ STATIC_URL }}/img/footprint.png"><br>Footprint</a></div><div class="clear"></div>
+                <div style="float:left; text-align: center;"><a href="/mobile/profile"><img src="{{ STATIC_URL }}/img/nav/profile.png"></a></div>
+                <div style="float:right; text-align: center;"><a href="#"><img src="{{ STATIC_URL }}/img/nav/footprint.png"></a></div><div class="clear"></div>
               </li>
-              <li><a href="/accounts/logout">Log out</a></li>
+              <li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
