@@ -1,3 +1,113 @@
 #trip_list {
     margin-top: 5px;
 }
+
+.row {
+    width: 100%;
+/*    background: #E0FFB8;*/
+    background-image: -webkit-linear-gradient(bottom, rgb(224,255,184) 10%, rgb(224,255,184) 55%, rgb(215,255,163) 78%);
+    box-shadow: 4px 4px 5px #888;
+    border-radius: 3px;
+    margin-bottom: 6px;
+}
+
+.cityholder {
+    float: left;
+    width: 28.3%;
+}
+
+.city {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.citylabel {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    height: 10px;
+    color: gray;
+    font-size: 0.6em;
+}
+
+.extraholder {
+    float: right;
+    width: 15%;
+}
+
+.num {
+    width: 70%;
+    background: #CBCBCB;
+    color: #AA2918;
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 22px;
+    margin: 4px auto;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.clear {
+    clear: both;
+}
+
+.nav li div img {
+    margin: 3px;
+}
+
+.nav li div {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.rideform input {
+    width: 100%;
+}
+
+.daterow input {
+    width: 20%;
+}
+
+.badges {
+    margin-top: 30px;
+}
+
+.badgerow {
+    width: 100%;
+    text-align: center;
+}
+
+.fl { 
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.badgeitem {
+    margin: 0 auto;
+    width: 140px;
+    height: 100px;
+    position:relative;
+}
+
+.bval {
+    font-size: 3em;
+    margin-top: 20px;
+}
+
+.badgelabel {
+    position:absolute; bottom:30px;
+    width: 100%;
+}
+
+.rwb {
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    font-size: 3em;
+}

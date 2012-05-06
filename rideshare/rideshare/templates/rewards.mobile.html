@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/create.js"></script>
+{% endblock %}
+
+{% block title %}
+Find a Ride
+{% endblock %}
+
+{% block title2 %}
+Ride w/ Me | Create a Ride
+{% endblock %}
+
+
+{% block content %}
+
+<h3>Most Recent Trip</h3>
+
+<div>
+  <div class="triplabeltop">
+    Last Trip
+  </div>
+  <div class="npts">
+    {{ recent_trip_points }} pts w/ {{ recent_trip_psg }} {{ recent_trip_s }}
+  </div>
+  <div class="miles">
+    {{ recent_trip.distancef }} mi from Boston MA to Philadelphia PA
+  </div>
+</div>
+
+<div class="badges">
+  <div class="badgerow">
+    <div class="badgeitem fl">
+      <div class="bval">
+        400
+      </div>
+      <div class="badgelabel">
+        CO2
+      </div>
+    </div>
+    <div class="badgeitem fr">
+      <div class="bval">
+        400
+      </div>
+      <div class="badgelabel">
+        CO2
+      </div>
+    </div>
+  </div>
+  <div class="badgerow">
+    <div class="badgeitem fl">
+      <div class="bval">
+        400
+      </div>
+      <div class="badgelabel">
+        CO2
+      </div>
+    </div>
+    <div class="badgeitem fr">
+      <div class="bval">
+        400
+      </div>
+      <div class="badgelabel">
+        CO2
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+
+<button class="btn btn-info rwb">Rewards</button>
+
+{% endblock %}

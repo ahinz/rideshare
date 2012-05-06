@@ -45,6 +45,39 @@ class Trip(models.Model):
     def going(self):
         return Rider.objects.filter(trip=self,status=RiderStatus.ACCEPTED)
 
+    def formatted_date(self):
+        return self.time.strftime("%a %m/%d/%y")
+
+    def distance(self):
+        from math import radians, cos, sin, asin, sqrt
+        # convert decimal degrees to radians 
+        lon1, lat1, lon2, lat2 = map(radians, [self.start.x, self.start.y, self.end.x, self.end.y])
+
+        # haversine formula 
+        dlon = lon2 - lon1 
+        dlat = lat2 - lat1 
+        a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+        c = 2 * asin(sqrt(a)) 
+        km = 6367 * c
+        mi = km * 0.621371192
+
+        return mi
+
+    def distancef(self):
+        return "%0f" % self.distance()
+
+    def passenger_count(self):
+        return len(Rider.objects.filter(trip=self)) - 1
+
+    def points_for_user(self, user):
+        # Check if driver
+        #TODO: Don't use len() use count()...
+        if len(Rider.objects.filter(user=user,trip=self,role=RiderRole.DRIVER)) > 0:
+            return int(self.distance()) * self.passenger_count()
+        else:
+            return int(self.distance())
+
+
 class RiderRole:
     PASSENGER = "PASSENGER"
     DRIVER = "DRIVER"

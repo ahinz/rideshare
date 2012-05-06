@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/create.js"></script>
+{% endblock %}
+
+{% block title %}
+Find a Ride
+{% endblock %}
+
+{% block title2 %}
+Ride w/ Me | Create a Ride
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Similar trips were found!</h2>
+
+{% for trip in trips %}
+{% include "triprow.mobile.html" with trip=trip %}
+{% endfor %}
+
+<br>
+<div class="rideform">
+  <form method="POST" action="/mobile/do_create">
+    {% csrf_token %}
+    <input type="hidden" name="start"  value="{{ start }}">
+    <input type="hidden" name="end"  value="{{ end }}">
+    <input type="hidden" name="datetime"  value="{{ datetime }}">
+    <input class="btn btn-danger" type="submit" value="Create My Own Trip">
+  </form>
+</div>
+
+{% endblock %}

@@ -3,7 +3,11 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required 
 from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 from django.contrib.auth.models import User
+
+from datetime import datetime
+
 from omgeo import Geocoder
 from omgeo.places import PlaceQuery
 from rideshare.models import Trip, Rider, RiderRole, RiderStatus
@@ -97,7 +101,125 @@ def update_pending(request, trip_id, verb, user_id):
         return redirect('/main')
     else:
         raise Exception("Invalid user (%s=%s)" % (trip.created_by.pk,request.user.pk))
+
+def do_search(startstr,endstr,time):
+    start_match = get_top_result_from_address(startstr)
+    end_match = get_top_result_from_address(endstr)
+
+    start = Point(float(start_match.x), float(start_match.y))
+    end = Point(float(end_match.x), float(end_match.y))
+
+    print "Doing search from %s to %s" % (start,end)
+
+    rad = 1000*60 # 100 km
+
+    trips = Trip.objects.filter(start__distance_lte=(start,D(m=rad)),
+                                end__distance_lte=(end,D(m=rad)))
+
+    return trips
     
+    
+@login_required
+def mobile_perform_search(request):
+    m,d,y = request.REQUEST['date'].split("/")
+
+    trips = do_search(
+        request.REQUEST['start'],
+        request.REQUEST['end'],
+        "%s-%s-%s %s" % (y,m,d,request.REQUEST['time']))
+
+    return render_to_response("search.mobile.html",
+                              { "trips" : trips },
+                              context_instance=RequestContext(request))                              
+    
+    
+@login_required
+def rewards(request):
+    recent_trip =  Trip.objects.filter(time__lte=datetime.datetime.now())[0]
+
+    pcount = recent_trip.passenger_count()
+    if pcount > 1:
+        psg = "passengers"
+    else:
+        psg = "passenger"
+        
+
+    return render_to_response("rewards.mobile.html",
+                              { "recent_trip" : recent_trip,
+                                "recent_trip_points" : recent_trip.points_for_user(request.user),
+                                "recent_trip_psg" : pcount,
+                                "recent_trip_s" : psg },
+                              context_instance=RequestContext(request))                              
+    
+
+
+@login_required
+def mobile_do_create(request):
+    start_match = get_top_result_from_address(request.POST['start'])
+    end_match = get_top_result_from_address(request.POST['end'])
+    time = request.POST['datetime']
+
+    trip = Trip.objects.create(start=Point(float(start_match.x), float(start_match.y)),
+                               start_readable=start_match.match_addr,
+                               end=Point(float(end_match.x), float(end_match.y)),
+                               end_readable=end_match.match_addr,
+                               created_by=request.user, time=time)
+    Rider.objects.create(trip=trip, user=request.user,
+                         role=RiderRole.DRIVER, status=RiderStatus.ACCEPTED)
+
+    return redirect("/mobile/my_trips")
+
+
+@login_required
+def mobile_create(request):
+
+    return render_to_response("create.mobile.html",
+                              {},
+                              context_instance=RequestContext(request))
+@login_required
+def mobile_create_similar(request):
+    m,d,y = request.REQUEST['date'].split("/")
+
+    datetime = "%s-%s-%s %s" % (y,m,d,request.REQUEST['time'])
+
+    trips = do_search(
+        request.REQUEST['start'],
+        request.REQUEST['end'],
+        datetime)[0:4]
+
+    return render_to_response("search_similar.mobile.html",
+                             { "trips" : trips,
+                               "start" : request.REQUEST['start'],
+                               "end"   : request.REQUEST['end'],
+                               "datetime" : datetime },
+                              context_instance=RequestContext(request))                              
+
+
+
+@login_required
+def mobile_find(request):
+
+    return render_to_response("find.mobile.html",
+                              {},
+                              context_instance=RequestContext(request))
+
+@login_required
+def mobile_home(request):
+
+    return render_to_response("home.mobile.html", 
+                              {},
+                              context_instance=RequestContext(request))
+
+@login_required
+def mobile_my_trips(request):
+    # mytrips = Trip.objects.filter(created_by=request.user)
+
+    trips = Trip.objects.filter(rider__user=request.user).order_by("-time") #.exclude(created_by=request.user)
+
+    return render_to_response("mobile.html",
+                              { "trips" : trips },
+                              context_instance=RequestContext(request))                              
+
 
 @login_required
 def main(request):

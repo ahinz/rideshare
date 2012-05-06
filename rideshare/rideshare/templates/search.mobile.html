@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/create.js"></script>
+{% endblock %}
+
+{% block title %}
+Find a Ride
+{% endblock %}
+
+{% block title2 %}
+Ride w/ Me | Find a Ride
+{% endblock %}
+
+
+{% block content %}
+
+{% for trip in trips %}
+{% include "triprow.mobile.html" with trip=trip %}
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/find.js"></script>
+{% endblock %}
+
+{% block title %}
+Ride w/ Me
+{% endblock %}
+
+{% block title2 %}
+Ride w/ Me | Create a Ride
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="/mobile/similar_trips">
+{% csrf_token %}
+<div class="rideform">
+  <div>Leaving from:</div>
+  <div><input placeholder="1234 Market St Philadelphia PA" name="start"></div>
+  <div>Going to:</div>
+  <div><input placeholder="100 N Main St New Haven CT" name="end"></div>
+  <div>Leaving on:</div>
+  <div class="daterow"><input id="dpicker" name="date"> at <input id="time" name="time"></div>
+  <input type="submit">
+</div>
+</form>
+
+{% endblock %}
