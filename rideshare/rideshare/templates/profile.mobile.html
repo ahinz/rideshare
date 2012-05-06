@@ -5,14 +5,12 @@
 {% endblock %}
 
 {% block title %}
-Find a Ride
+{{ rider.user.first_name }} {{ rider.user.last_name }} - {{ rider.user.username }}
 {% endblock %}
 
 {% block title2 %}
-Ride w/ Me | Create a Ride
+Ride w/ Me | {{ rider.user.first_name }} {{ rider.user.last_name }} ({{ rider.user.username }})
 {% endblock %}
-
-
 {% block content %}
 
 <div class="profile">
@@ -20,7 +18,7 @@ Ride w/ Me | Create a Ride
     <img src="http://photos-ak.sparkpeople.com/4/8/l486206643.jpg" width="100px">
   </div>
   <div class="profile_data">
-    <div>Name</div>
+    <div><b>{{ rider.user.first_name }} {{ rider.user.last_name }}</b></div>
     <div>Boston MA</div>
     <div>20k Points / 403mi / 4 Stars</div>
   </div>
