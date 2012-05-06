@@ -142,6 +142,8 @@ def mobile_profile(request):
         raw = rider.user.userprofile.raw_data
         raw = json.loads(raw)
         template_data = dict(template_data, dict(raw=raw))
+        if 'image' in raw:
+            template_data = dict(template_data, dict(photo=raw['image']))
     except:
         pass
     return render_to_response("profile.mobile.html",
