@@ -5,5 +5,5 @@
 
 ---
 
-![2012 Boston Cleanweb Hackathon leaders and participants exchange a large cardboard check in the amount of $3,500 -- a second place award for the "Ride with Me" app and concept.](media/ride-with-me.jpg)
+![2012 Boston Cleanweb Hackathon leaders and participants including Adam Hinz and Joseph Tricarico of Azavea exchange a large cardboard check in the amount of $3,500 -- a second place award for the "Ride with Me" app and concept.](media/ride-with-me.jpg)
 Martin LaMonica/CNET
